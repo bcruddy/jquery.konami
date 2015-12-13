@@ -4,27 +4,26 @@
     <meta charset="UTF-8">
     <title>Konami Plugin Demo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="demo.css" />
 </head>
 <body>
     <div class="container">
         <div class="row margin60">
             <div class="col-md-8 col-md-offset-2">
                 <h2>Konami Code jQuery Easter Egg</h2>
-            </div>
-        </div>
-        <div class="row margin60">
-            <div class="col-md-6 col-md-offset-3">
-                <p id="easter-egg">Wooo! It worked!</p>
+                <p></p>
             </div>
         </div>
     </div>
 <script src="../node_modules/jquery/dist/jquery.js"></script>
 <script src="jquery.konami.js"></script>
 <script>
-    $('body').konami(function () {
-        $('#easter-egg').show();
+    $('body').konami({
+        onPatternMatch: function () {
+            alert('match!');
+        }
     });
+
 </script>
 </body>
 </html>

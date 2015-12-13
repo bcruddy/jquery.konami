@@ -4,9 +4,9 @@
   "description": "jquery plugin for display easter eggs when a user inputs the konami code",
   "main": "src/jquery.konami.js",
   "scripts": {
-    "lint": "jshint src/jquery.konami.js",
-    "build": "",
-    "test": ""
+    "lint": "jshint src/jquery.konami.js tests/index.js",
+    "build": "uglifyjs --compress --mangle -o ./src/jquery.konami.min.js ./src/jquery.konami.js",
+    "test": "open ./tests/index.html"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "jshint": "^2.9.1-rc1",
-    "qunitjs": "^1.20.0"
+    "qunitjs": "^1.20.0",
+    "uglify-js": "^2.6.1"
   }
 }
