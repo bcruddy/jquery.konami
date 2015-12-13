@@ -2,9 +2,11 @@
   "name": "konami",
   "version": "0.0.1",
   "description": "jquery plugin for display easter eggs when a user inputs the konami code",
-  "main": "src/index.js",
+  "main": "src/jquery.konami.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "jshint src/jquery.konami.js",
+    "build": "",
+    "test": ""
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,7 @@
     "jquery": "^2.1.4"
   },
   "devDependencies": {
-    "qunit": "^0.7.7"
+    "jshint": "^2.9.1-rc1",
+    "qunitjs": "^1.20.0"
   }
 }
