@@ -1,6 +1,6 @@
 {
   "name": "konami",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "jquery plugin for display easter eggs when a user inputs the konami code",
   "main": "src/jquery.konami.js",
   "scripts": {
@@ -16,8 +16,7 @@
     "konami",
     "javascript",
     "jquery",
-    "easter",
-    "egg"
+    "easter egg"
   ],
   "author": "Brian Ruddy <briacruddy at gmail dot com> @bcruddy",
   "license": "MIT",
