@@ -5,13 +5,11 @@
     var pluginName = 'konami',
         defaults = {
             pattern: [38, 38, 40, 40, 37, 39, 37, 39, 66, 65].join(''), // up, up, down, down, left, right, left, right, b, a
-            onInit: null,
-            onPatternMatch: function () {
-                console.log('[konami] good match');
-            },
             once: true,
             hasFiredMatch: false,
-            methodList: ['onInit', 'onPatternMatch']
+            methodList: ['onInit', 'onPatternMatch'],
+            onInit: null,
+            onPatternMatch: null
         };
 
     function Plugin(element, options) {
@@ -26,7 +24,12 @@
     }
 
     $.extend(Plugin.prototype, {
+
         init: function () {
+            if (!this.fnExists('onPatternMatch')) {
+                this.settings.onPatternMatch = this.emitMatchEvent.bind(this);
+            }
+
             this.$element.on('keydown', this.listen.bind(this));
 
             if (this.fnExists('onInit')) {
@@ -50,6 +53,10 @@
 
         fnExists: function (fn) {
             return this.settings.hasOwnProperty(fn) && typeof this.settings[fn] === 'function';
+        },
+
+        emitMatchEvent: function () {
+            this.$element.trigger('konami.match', this);
         },
 
         listen: function (e) {

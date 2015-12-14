@@ -18,12 +18,9 @@
 <script src="../node_modules/jquery/dist/jquery.js"></script>
 <script src="jquery.konami.js"></script>
 <script>
-    $('body').konami({
-        onPatternMatch: function () {
-            alert('match!');
-        }
-    });
-
+$('body').on('konami.match', function () {
+    console.log('konami match event!');
+}).konami();
 </script>
 </body>
 </html>

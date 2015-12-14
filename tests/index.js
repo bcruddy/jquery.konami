@@ -64,13 +64,13 @@ QUnit.test('isMatchAllowed', function (assert) {
     assert.expect(3);
 
     konami.settings.once = false;
-    ok(konami.isMatchAllowed(), 'allowed, once = false');
+    ok(konami.isMatchAllowed(), 'allowed, hasFiredMatch = false, once = false');
 
     konami.settings.hasFiredMatch = true;
-    ok(konami.isMatchAllowed(), 'allowed, once = false');
+    ok(konami.isMatchAllowed(), 'allowed, hasFiredMatch = true, once = false');
 
     konami.settings.once = true;
-    ok(!konami.isMatchAllowed(), 'not allowed, once = true');
+    ok(!konami.isMatchAllowed(), 'not allowed, hasFiredMatch = true, once = true');
 });
 
 QUnit.test('fnExists recognizes available functions', function (assert) {
