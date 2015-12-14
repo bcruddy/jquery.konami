@@ -60,11 +60,24 @@ QUnit.test('onPatternMatch invoked', function (assert) {
     ok(konami.hasFiredMatch, 'callback invoked');
 });
 
+QUnit.test('isMatchAllowed', function (assert) {
+    assert.expect(3);
+
+    konami.settings.once = false;
+    ok(konami.isMatchAllowed(), 'allowed, once = false');
+
+    konami.settings.hasFiredMatch = true;
+    ok(konami.isMatchAllowed(), 'allowed, once = false');
+
+    konami.settings.once = true;
+    ok(!konami.isMatchAllowed(), 'not allowed, once = true');
+});
+
 QUnit.test('fnExists recognizes available functions', function (assert) {
 
-    assert.expect(konami.settings.methods.length);
+    assert.expect(konami.settings.methodList.length);
 
-    konami.settings.methods.forEach(function (fn) {
+    konami.settings.methodList.forEach(function (fn) {
         ok(konami.fnExists(fn), fn + ' available');
     });
 });

@@ -1,19 +1,17 @@
-
-
-;(function ($, window, document, undefined) {
+;(function ($) {
 
     'use strict';
 
     var pluginName = 'konami',
         defaults = {
-            pattern: '38384040373937396665', // up, up, down, down, left, right, left, right, b, a
+            pattern: [38, 38, 40, 40, 37, 39, 37, 39, 66, 65].join(''), // up, up, down, down, left, right, left, right, b, a
             onInit: null,
             onPatternMatch: function () {
                 console.log('[konami] good match');
             },
             once: true,
             hasFiredMatch: false,
-            methods: ['onInit', 'onPatternMatch']
+            methodList: ['onInit', 'onPatternMatch']
         };
 
     function Plugin(element, options) {
@@ -30,6 +28,7 @@
     $.extend(Plugin.prototype, {
         init: function () {
             this.$element.on('keydown', this.listen.bind(this));
+
             if (this.fnExists('onInit')) {
                 this.settings.onInit(this);
             }
@@ -50,9 +49,8 @@
         },
 
         fnExists: function (fn) {
-            return this.settings[fn] && typeof this.settings[fn] === 'function';
+            return this.settings.hasOwnProperty(fn) && typeof this.settings[fn] === 'function';
         },
-
 
         listen: function (e) {
             this.input += e.keyCode;
@@ -61,8 +59,6 @@
                 if (this.fnExists('onPatternMatch')) {
                     this.settings.onPatternMatch(this);
                     this.hasFiredMatch = true;
-                } else {
-                    this.$element.trigger('konami.match', [this]);
                 }
             }
 
@@ -79,4 +75,4 @@
         });
     };
 
-})(jQuery, window, document);
+})(jQuery);
