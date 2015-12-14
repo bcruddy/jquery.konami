@@ -6,16 +6,16 @@
 
     var pluginName = 'konami',
         defaults = {
-            pattern: '38384040373937396665',
+            pattern: '38384040373937396665', // up, up, down, down, left, right, left, right, b, a
             onInit: null,
             onPatternMatch: function () {
-                console.log('default konami callback');
+                console.log('[konami] good match');
             },
             once: true,
-            hasFired: false
+            hasFiredMatch: false,
+            methods: ['onInit', 'onPatternMatch']
         };
 
-    // The actual plugin constructor
     function Plugin(element, options) {
         this.element = element;
         this.$element = $(element);
@@ -30,13 +30,12 @@
     $.extend(Plugin.prototype, {
         init: function () {
             this.$element.on('keydown', this.listen.bind(this));
-            if (this.settings.onInit &&
-                typeof this.settings.onInit === 'function') {
+            if (this.fnExists('onInit')) {
                 this.settings.onInit(this);
             }
         },
 
-        patternMatch: function () {
+        isPatternMatch: function () {
             return this.settings.pattern === this.input;
         },
 
@@ -46,17 +45,24 @@
             }
         },
 
+        isMatchAllowed: function () {
+            return !this.settings.once || (this.settings.once && !this.settings.hasFiredMatch);
+        },
+
+        fnExists: function (fn) {
+            return this.settings[fn] && typeof this.settings[fn] === 'function';
+        },
+
+
         listen: function (e) {
             this.input += e.keyCode;
-            var matchAllowed = !this.settings.once ||
-                (this.settings.once && !this.settings.hasFired);
-            var onMatchIsFunc = this.settings.onPatternMatch &&
-                typeof this.settings.onPatternMatch === 'function';
 
-            if (this.patternMatch() && matchAllowed) {
-                if (onMatchIsFunc) {
+            if (this.isPatternMatch() && this.isMatchAllowed()) {
+                if (this.fnExists('onPatternMatch')) {
                     this.settings.onPatternMatch(this);
-                    this.hasFired = true;
+                    this.hasFiredMatch = true;
+                } else {
+                    this.$element.trigger('konami.match', [this]);
                 }
             }
 

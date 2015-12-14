@@ -28,34 +28,43 @@ QUnit.test('keydown listener', function (assert) {
     event.keyCode = 50;
     $('body').trigger(event);
 
-    equal(konami.input.length, 2);
+    ok(konami.input.length === 2, 'capturing keydown events');
 });
 
 QUnit.test('good pattern match', function (assert) {
     assert.expect(1);
 
-    konami.input = '38384040373937396665';
-    ok(konami.patternMatch(), 'valid pattern accepted');
+    konami.input = konami.settings.pattern;
+    ok(konami.isPatternMatch(), 'valid pattern accepted');
 });
 
 QUnit.test('bad pattern match', function (assert) {
     assert.expect(2);
 
     konami.input = '1234';
-    ok(!konami.patternMatch(), 'invalid pattern rejected');
+    ok(!konami.isPatternMatch(), 'invalid pattern rejected');
 
     konami.resetInvalidInput();
-    ok(konami.input === '', 'invalid pattern resets input');
+    ok(konami.input === '', 'invalid pattern resets konami.input');
 });
 
 QUnit.test('onPatternMatch invoked', function (assert) {
     assert.expect(1);
 
-    konami.input = '38384040373937396665';
+    konami.input = konami.settings.pattern;
     konami.settings.onPatternMatch = function () {
         return 'invoked successfully';
     };
     konami.listen({ keyCode: '' });
 
-    ok(konami.hasFired, 'callback invoked');
+    ok(konami.hasFiredMatch, 'callback invoked');
+});
+
+QUnit.test('fnExists recognizes available functions', function (assert) {
+
+    assert.expect(konami.settings.methods.length);
+
+    konami.settings.methods.forEach(function (fn) {
+        ok(konami.fnExists(fn), fn + ' available');
+    });
 });
