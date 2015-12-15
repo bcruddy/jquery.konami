@@ -6,8 +6,6 @@
         defaults = {
             pattern: [38, 38, 40, 40, 37, 39, 37, 39, 66, 65].join(''), // up, up, down, down, left, right, left, right, b, a
             once: true,
-            hasFiredMatch: false,
-            methodList: ['onInit', 'onPatternMatch'],
             onInit: null,
             onPatternMatch: null
         };
@@ -18,6 +16,7 @@
         this.settings = $.extend({}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
+        this.hasFiredMatch = false;
         this.input = '';
 
         this.init();
@@ -26,11 +25,9 @@
     $.extend(Plugin.prototype, {
 
         init: function () {
-            if (!this.fnExists('onPatternMatch')) {
-                this.settings.onPatternMatch = this.emitMatchEvent.bind(this);
-            }
-
             this.$element.on('keydown', this.listen.bind(this));
+
+            this.emitEvent('init');
 
             if (this.fnExists('onInit')) {
                 this.settings.onInit(this);
@@ -42,31 +39,34 @@
         },
 
         resetInvalidInput: function () {
-            if (this.settings.pattern.search(this.input) === -1) {
+            if (this.settings.pattern.search(this.input) === -1 || this.input === this.settings.pattern) {
                 this.input = '';
             }
         },
 
         isMatchAllowed: function () {
-            return !this.settings.once || (this.settings.once && !this.settings.hasFiredMatch);
+            return !this.settings.once || (this.settings.once && !this.hasFiredMatch);
         },
 
-        fnExists: function (fn) {
-            return this.settings.hasOwnProperty(fn) && typeof this.settings[fn] === 'function';
+        fnExists: function (fnName) {
+            return this.settings.hasOwnProperty(fnName) && typeof this.settings[fnName] === 'function';
         },
 
-        emitMatchEvent: function () {
-            this.$element.trigger('konami.match', this);
+        emitEvent: function (eventName) {
+            this.$element.trigger('konami.' + eventName, [this]);
         },
 
         listen: function (e) {
             this.input += e.keyCode;
 
             if (this.isPatternMatch() && this.isMatchAllowed()) {
+                this.emitEvent('match');
+
                 if (this.fnExists('onPatternMatch')) {
                     this.settings.onPatternMatch(this);
-                    this.hasFiredMatch = true;
                 }
+
+                this.hasFiredMatch = true;
             }
 
             this.resetInvalidInput();

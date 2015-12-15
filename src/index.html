@@ -18,9 +18,16 @@
 <script src="../node_modules/jquery/dist/jquery.js"></script>
 <script src="jquery.konami.js"></script>
 <script>
-$('body').on('konami.match', function () {
-    console.log('konami match event!');
-}).konami();
+$('body')
+    .on('konami.init', function (e, data) {
+        console.log('konami.init event fired');
+        console.log(data);
+    })
+    .on('konami.match', function (e, data) {
+        console.log('konami.match event fired');
+        console.log(data);
+    })
+    .konami();
 </script>
 </body>
 </html>

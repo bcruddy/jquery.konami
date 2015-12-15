@@ -1,83 +1,65 @@
-/**
- * Created by bruddy on 12/13/15.
- */
+(function () {
 
-'use strict';
+    'use strict';
 
-var konami = null;
-$('body').konami({
-    onInit: function (plugin) {
-        konami = plugin;
+    var konami = null;
+    $('body').konami({
+        onInit: function (plugin) {
+            konami = plugin;
+        }
+    });
+
+    function setupModule() {
+        $('body').on('keydown', function (e) {
+            konami.input += e.keyCode;
+        });
     }
-});
 
-function setupModule() {
-    $('body').on('keydown', function (e) {
-        konami.input += e.keyCode;
+    QUnit.module('konami', { setup: setupModule });
+
+    QUnit.test('keydown listener', function (assert) {
+        assert.expect(1);
+
+        konami.input = '';
+
+        var event = jQuery.Event('keydown');
+        event.keyCode = 50;
+        $('body').trigger(event);
+
+        ok(konami.input.length === 2, 'capturing keyboard input');
     });
-}
 
-module('konami', { setup: setupModule });
+    QUnit.test('pattern match', function (assert) {
+        assert.expect(3);
 
-QUnit.test('keydown listener', function (assert) {
-    assert.expect(1);
+        var mock = {
+            input: konami.settings.pattern,
+            settings: { pattern: konami.settings.pattern }
+        };
 
-    konami.input = '';
+        ok(konami.isPatternMatch.call(mock), 'accepts valid pattern');
 
-    var event = jQuery.Event('keydown');
-    event.keyCode = 50;
-    $('body').trigger(event);
+        mock.input = '1234';
+        ok(!konami.isPatternMatch.call(mock), 'rejects invalid pattern');
 
-    ok(konami.input.length === 2, 'capturing keydown events');
-});
-
-QUnit.test('good pattern match', function (assert) {
-    assert.expect(1);
-
-    konami.input = konami.settings.pattern;
-    ok(konami.isPatternMatch(), 'valid pattern accepted');
-});
-
-QUnit.test('bad pattern match', function (assert) {
-    assert.expect(2);
-
-    konami.input = '1234';
-    ok(!konami.isPatternMatch(), 'invalid pattern rejected');
-
-    konami.resetInvalidInput();
-    ok(konami.input === '', 'invalid pattern resets konami.input');
-});
-
-QUnit.test('onPatternMatch invoked', function (assert) {
-    assert.expect(1);
-
-    konami.input = konami.settings.pattern;
-    konami.settings.onPatternMatch = function () {
-        return 'invoked successfully';
-    };
-    konami.listen({ keyCode: '' });
-
-    ok(konami.hasFiredMatch, 'callback invoked');
-});
-
-QUnit.test('isMatchAllowed', function (assert) {
-    assert.expect(3);
-
-    konami.settings.once = false;
-    ok(konami.isMatchAllowed(), 'allowed, hasFiredMatch = false, once = false');
-
-    konami.settings.hasFiredMatch = true;
-    ok(konami.isMatchAllowed(), 'allowed, hasFiredMatch = true, once = false');
-
-    konami.settings.once = true;
-    ok(!konami.isMatchAllowed(), 'not allowed, hasFiredMatch = true, once = true');
-});
-
-QUnit.test('fnExists recognizes available functions', function (assert) {
-
-    assert.expect(konami.settings.methodList.length);
-
-    konami.settings.methodList.forEach(function (fn) {
-        ok(konami.fnExists(fn), fn + ' available');
+        konami.resetInvalidInput.call(mock);
+        ok(mock.input === '', 'invalid pattern resets input');
     });
-});
+
+    QUnit.test('pattern match allowed', function (assert) {
+        assert.expect(3);
+
+        var mock = {
+            hasFiredMatch: false,
+            settings: { once: true }
+        };
+
+        ok(konami.isMatchAllowed.call(mock), 'accepts valid condition 1');
+
+        mock.hasFiredMatch = true;
+        ok(!konami.isMatchAllowed.call(mock), 'rejects invalid condition');
+
+        mock.settings.once = false;
+        ok(konami.isMatchAllowed.call(mock), 'accepts valid condition 2');
+    });
+})();

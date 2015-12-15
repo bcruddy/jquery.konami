@@ -6,7 +6,7 @@
 
   "qunit": true,
 
-  "node": true,
+  "node": false,
 
   "esnext": false,
 
