@@ -16,6 +16,7 @@ And emits the following events:
 - 'konami.init' - emitted when plugin is initialized
 - 'konami.match' - emitted when user input matches pattern. Does not respect `options.once`
 
+Code:
 
     <script src="path/to/jquery"></script>
     <script src="path/to/konami.min.js"></script> // or konami.js
