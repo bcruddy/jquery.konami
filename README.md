@@ -4,6 +4,8 @@ Embed keyboard-accessible easter eggs in your website.
 
 ##Usage
 
+Available via `npm install jquery.konami` [package on npm](https://www.npmjs.com/package/jquery.konami)
+
 Konami accepts an options object with the follow properties:
 
 - onInit - function to be called when plugin initializes
