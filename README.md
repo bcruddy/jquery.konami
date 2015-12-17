@@ -24,7 +24,7 @@ Code:
     // Callback based
     <script>
         var options = { 
-             pattern: 'gopatriots',
+             pattern: [71, 79, 80, 65, 84, 82, 73, 79, 84, 83].join(''), // gopatriots
              onPatternMatch: function (e, data) {
                 $('#pats-banner').animate({ left: -20% }, 4000).fadeOut();
              }
