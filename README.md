@@ -1,6 +1,9 @@
 #jquery.konami
 
-Embed keyboard-accessible easter eggs in your website.
+Embed keyboard-accessible easter eggs in your website. Using it? Let me know, I'll add you to the list!
+
+##The List
+- [Photofy](http://photofy.com)
 
 ##Usage
 
