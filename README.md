@@ -1,8 +1,13 @@
 #jquery.konami
 
-Embed keyboard-accessible easter eggs in your website.
+Embed keyboard-accessible easter eggs in your website. Using it? Let me know, I'll add you to the list!
+
+##The List
+- [Photofy](http://photofy.com)
 
 ##Usage
+
+Available via `npm install jquery.konami` [package on npm](https://www.npmjs.com/package/jquery.konami)
 
 Konami accepts an options object with the follow properties:
 
@@ -24,7 +29,7 @@ Code:
     // Callback based
     <script>
         var options = { 
-             pattern: 'gopatriots',
+             pattern: [71, 79, 80, 65, 84, 82, 73, 79, 84, 83].join(''), // gopatriots
              onPatternMatch: function (e, data) {
                 $('#pats-banner').animate({ left: -20% }, 4000).fadeOut();
              }
