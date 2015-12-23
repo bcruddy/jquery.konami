@@ -1,6 +1,6 @@
 {
   "name": "jquery.konami",
-  "version": "0.0.3",
+  "version": "0.1.1",
   "description": "jquery plugin for display easter eggs when a user inputs the konami code",
   "main": "src/jquery.konami.js",
   "scripts": {

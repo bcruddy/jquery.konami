@@ -26,10 +26,10 @@
         event.keyCode = 50;
         $('body').trigger(event);
 
-        ok(konami.input.length === 2, 'capturing keyboard input');
+        equal(konami.input.length, 2, 'capturing keyboard input');
     });
 
-    QUnit.test('pattern match', function (assert) {
+    QUnit.test('isPatternMatch', function (assert) {
         assert.expect(3);
 
         var mock = {
@@ -39,14 +39,14 @@
 
         ok(konami.isPatternMatch.call(mock), 'accepts valid pattern');
 
-        mock.input = '1234';
+        mock.input = 'not the expected pattern';
         ok(!konami.isPatternMatch.call(mock), 'rejects invalid pattern');
 
         konami.resetInvalidInput.call(mock);
-        ok(mock.input === '', 'invalid pattern resets input');
+        equal(mock.input.length, 0, 'invalid pattern resets input');
     });
 
-    QUnit.test('pattern match allowed', function (assert) {
+    QUnit.test('isMatchAllowed', function (assert) {
         assert.expect(3);
 
         var mock = {
